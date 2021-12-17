@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="d81a352e6f.js"></script>
+    <link type="text/css" rel="stylesheet" href="main.css">
+</head>
+
+<body onload="initialize()">
+    <div id="logo" class="cover">
+        <span class="body" id="left"></span>
+        <span class='body' id="mid"></span>
+        <span class="body" id="right"></span>
+        <div class="cover" id="T"></div>
+        <div class="cover" id="hien"></div>
+        <div id="Nam">
+            <span id="N"></span>
+            <span id="am"></span>
+            <span id="end"></span>
+        </div>
+        <span id='hide'></span>
+        <div class="cover" id="uzik"></div>
+        <div id="infors">Sanixels - 6th Sense</div>
+    </div>
+    <audio class="panel" crossorigin="anonymous" id="music" src="" controls></audio>
+    <div class="panel" id="tools_panel">
+        <label for="tools_panel" style="margin: 10px 0px 0px 20px;"><h1>Main Tools</h1></label>
+        <hr width="75%">
+        <ul style="margin-top: 10px;">
+            <li class="selecting" id="bg-img" title="Background Image Settings">Background Image <i class="fa fa-angle-right"></i></li>
+            <li class="selecting" id="mz" title="Import Music">Music <i class="fa fa-angle-right"></i></li>
+
+            <li class="selecting" id="s-if" title="Adding Song's name, Author">Song's Infor <i class="fa fa-angle-right"></i></li>
+            <!-- <li class="selecting" id="spt" title="Your logo & Spectrum">Spectrum <i class="fa fa-angle-right"></i></li> -->
+            <li class="selecting" id="lr" title="Adding Song's lyrics">Lyrics <i class="fa fa-angle-right"></i></li>
+            <li class="selecting" id="ab" title="About">About <i class="fa fa-angle-right"></i></li>
+        </ul>
+    </div>
+    <!-- Function tab -->
+    <div class="panel st" id="st-bg-img">
+        <label for="st-bg-img"><h2>Backgrond Image Settings</h2></label>
+        <hr width="75%">
+        <ul style="margin: 10px 0px; color: #A4A4A4; list-style: none;">
+            <li>
+                <p>Option 1: <i>Upload an image file</i></p>
+                <input type="file" id="bg-img-f" accept="image/*">
+            </li>
+            <li>
+                <p>
+                    </i>Option 2: <i>Paste image link here</i></p>
+                <input type="text" id="url" value="" placeholder="Ex: https://.../image-name.png">
+                <button id="set-bt">Set</button>
+            </li>
+        </ul>
+        <hr/>
+        <p class="rm" id="bg-st-rm">
+            <u>Read me: <br/></u>
+            <span style="color:#A4A4A4; font-size: 15px;">Example</span>
+        </p>
+        <button class="close-tab">Close</button>
+    </div>
+    <div class="panel st" id="st-mz">
+        <label for="st-mz"><h2>Import Music</h2></label>
+        <hr width="75%">
+        <div style="margin: 10px 0px;">
+            <p>Upload an audio file</p>
+            <input type="file" id="mz-f" accept="audio/*">
+        </div>
+        <hr/>
+        <p class="rm" id="bg-st-rm">
+            <u>Read me: <br/></u>
+            <span style="color:#A4A4A4; font-size: 15px;">Example</span>
+        </p>
+        <button class="close-tab">Close</button>
+    </div>
+    <div class="panel st" id="st-s">
+        <label for="st-s"><h2>Song's Infor Settings</h2></label>
+        <hr width="75%">
+        <ul style="margin: 10px 0px; color: #A4A4A4; list-style: none;">
+            <li>
+                <p>Song's infor: <i>Add author & song name (optional)</i></p>
+                <input type="file" id="bg-img-f" accept="image/*">
+            </li>
+            <li>
+                <p>
+                    </i>Option 2: <i>Paste image link here</i></p>
+                <input type="text" value="" placeholder="Ex: https://.../image-name.png">
+                <button id="set-bt">Set</button>
+            </li>
+        </ul>
+        <hr/>
+        <p class="rm" id="bg-st-rm">
+            <u>Read me: <br/></u>
+            <span style="color:#A4A4A4; font-size: 15px;">Recommended: Shouldn't display both "Song's Infor" and "Lyrics", choose one of them!</span>
+        </p>
+        <button class="close-tab">Close</button>
+    </div>
+    <div class="panel st" id="st-lr">
+        <textarea name="lyrics" id="text" cols="40" rows="30" placeholder="Add lyrics here..."></textarea>
+        <ul class="listlyrics hide" id="listly">
+        </ul>
+        <div id="ly-li-btn">
+            <button id="submit">Submit</button>
+            <button id="play-get" title="After click this button, then lick Timenode in the list lyrics above while music playing">Get TimeNode</button>
+            <button id="savelyrics">Save lyrics</button>
+            <button class="hide" id="runlr" style="z-index: 99;">Run Lyrics</button>
+        </div>
+        <button class="close-tab" style="margin-top: 5px;" onclick="showtimeline()">Close</button>
+    </div>
+    <p class="lyrics hide" id="main"></p>
+    <p class="lyrics hide" id="main2">Main2 Lyrics</p>
+    <p class="lyrics hide" id="light"></p>
+    <!-- Function tab area end -->
+    <!-- Time line -->
+    <div class="panel " id="timeline">
+        <label for="timeline"><h2>Time line Controls</h2></label>
+        <hr width="20%">
+        <button><i id="play-btn" class="fa fa-play" style="font-size: 24px;" title="Play/Pause"></i></button>
+        <div id="timebar"></div>
+        <!-- <audio crossorigin="anonymous" id="music" src="" loop></audio> -->
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <!-- Time line end -->
+    <!-- canvas spectrum  -->
+    <canvas id="cv-rect" width="768" height="300"></canvas>
+    <div id="timeline-show">
+        <div class="" id="prog"></div>
+    </div>
+    <!-- <div id="songif">
+        <p style="font-family: cursive; font-size: 22px; font-weight: bold;">
+            Author: [Ben Moon - (ft. Veela)] - Majesty <br/>
+            Song  : Majesty
+        </p>
+    </div> -->
+    <div id="message">
+        <p>
+            <i class="fa fa-exclamation-circle"> </i>
+            <span id="msg_content"></span>
+        </p>
+        <span id="closeMess" title="Close">X</span>
+    </div>
+
+</body>
+<script type="text/javascript" src="jquery-3.4.1.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</html>

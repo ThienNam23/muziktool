@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+
+        }
+        body{
+            background-image: url('majesty.jpg');
+            background-size: cover;
+        }
+        #text{
+            margin-top: 10px;
+            font-size: 14px;
+            font-family: cursive;
+            resize: none;
+        }
+        .listlyrics{
+            list-style-type: none;
+            border: 1px solid black;
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            overflow-y: scroll;
+            height: 500px;
+        }
+        .listlyrics li>*{
+            display: inline-block;
+            margin: 5px 5px;
+            font-size: 14px;
+            font-family: cursive;
+        }
+        .timenode{
+            position: relative;
+            right: 0px;
+            border: 1px solid black;
+            padding: 2px;
+        }
+        .timenode:hover{
+            cursor: pointer;
+        }
+        #music{
+            position:absolute;
+            top: 50vh;
+            left: 35vw;
+        }
+        .lyrics{
+            position: absolute;
+            font-size: 30px;
+            /* border: 1px solid white; */
+            color: white;
+            overflow-y: hidden;
+        }
+        #light{
+            right: 0;
+            opacity: 0.7;
+        }
+        .hide{
+            display: none;
+        }
+        .invisible{
+            animation: invisible 1s ease-out;
+        }
+        .visible{
+            opacity: 1.0;
+        }
+        .hlight{
+            animation: hlight .6s ease-out infinite;
+        }
+        @keyframes invisible {
+            0%{
+                opacity: 1.0;
+            }
+            100%{
+                opacity: 0.0;
+            }
+        }
+        @keyframes hlight {
+            0%{
+                opacity: .7;
+            }
+            50%{
+                opacity: 0.3;
+            }
+            100%{
+                opacity: .7;
+            }
+        }
+    </style>
+</head>
+<body>
+    <textarea name="lyrics" id="text" cols="50" rows="30" placeholder="Add lyrics here..."></textarea>
+    <button id="submit">Submit</button>
+    <ul class="listlyrics hide" id="listly">
+    </ul>
+    <input type="file" id="mz-f" accept="audio/*">
+    <button id="savelyrics">Save lyrics</button>
+    <p class="lyrics " id="main">Main Lyrics</p>
+    <p class="lyrics hide" id="light"></p>
+    <button id="runlr" style="z-index: 99;">Run Lyrics</button>
+    <audio crossorigin="anonymous" id="music" src="" controls autoplay></audio>
+</body>
+    <script type="text/javascript" src="jquery-3.4.1.js"></script>
+    <script>
+        var audio = document.getElementById('music');
+        var ul = $('#listly');
+        var light = $('#light');
+        var runlr = $('#runlr');
+        var submit = $('#submit');
+        const toTime = (n) =>{
+            var date = new Date(0);
+            n = Math.round(n);
+            date.setSeconds(n);
+            return date.toISOString().substr(14, 5);
+        }
+        const process = (text) =>{
+            let i = 0;
+            while (text.indexOf('\n') !== -1){
+                let content = text.slice(0, text.indexOf('\n')+1);
+                text = text.replace(content,'');
+                ul.append(`<li class='lyricedit'><p class='timenode' onclick='gettime(event)' id='${i++}'>00:00</p><p class='lytxt'>${content}</p></li>`);
+            }
+            ul.append(`<li class='lyricedit'><p class='timenode' onclick='gettime(event)' id='${i++}'>00:00</p><p class='lytxt'>${text}</p></li>`);
+            ul.append(`<li class='lyricedit'><p class='timenode' onclick='gettime(event)' id='${i++}'>00:00</p><p class='lytxt'></p></li>`);
+            for (i=0; i<timenode.length; i++)
+                $('.timenode').eq(i).text(toTime(timenode[i]));
+        }
+        const submitf = ()=>{
+            // get lyrics
+            var lyrics = $('#text').val() + '';
+            ul.removeClass('hide');
+            $('#listly>*').remove();
+            $('#light>*').remove();
+            process(lyrics);
+        }
+        submit.click(submitf);
+        $('#mz-f').change((event)=>{
+            reader.readAsDataURL(event.target.files[0]);
+        })
+        var reader = new FileReader();
+        reader.onload = function(event){
+            var url = event.target.result;
+            $('#music').attr("src",url);
+        }
+        var current = 0;
+        var timenode = new Array();
+        const gettime = (event) =>{
+            var el = event.target;
+            current = Math.round(audio.currentTime);
+            if (el.innerHTML != '00:00'){
+                timenode[el.id] = current;
+            }
+            else timenode[timenode.length] = current;
+            el.innerHTML = toTime(current);
+            // console.log(toTime(current));
+        }
+        $('#savelyrics').click(()=>{
+            if (timenode.length == 0 || timenode.length != $('.timenode').length)
+                alert('Missing timenode for lyrics!');
+            else {
+                for (var k of timenode) console.log(k);
+                for (var i=0; i<timenode.length - 1; i++)
+                    for (var j=i+1; j<timenode.length; j++)
+                        if (timenode[i] > timenode[j]){
+                            alert(`Wrong timeline of timenode ${timenode[i]} & ${timenode[j]}!`);
+                            return -1;
+                        }
+                //alert('success!');
+            }
+        })
+        runlr.click(()=>{
+            var height = $('#listly>*').first().height();
+            if (runlr.text() == 'Run Lyrics'){
+                runlr.text('Edit Lyrics');
+                submit.off('click');
+                audio.currentTime = 0;
+                audio.play();
+                runlyric(height);
+            }  
+            else {
+                runlr.text('Run Lyrics');
+                submit.on('click',submitf);
+                ul.height(500);
+            }
+            ul.toggleClass('hide'); // .scrollTop(height)
+        })
+        
+        var main = $('#main');
+        const runlyric = (height)=>{
+            // run first line
+            var i = 0, j= 0, current, text, hide = false;
+            audio.addEventListener('timeupdate',()=>{
+                current = Math.round(audio.currentTime);
+                // get text
+                if (timenode[i]-current == 0){
+                    text = $('.lytxt').eq(i).text();
+                    console.log(text);
+                    if (text.charAt(0) == '~'){             // if is light text
+                        main.addClass('hide');
+                        hide = true;
+                        light.text(text.slice(1)).removeClass('hide').addClass('hlight');
+                    }
+                    else{
+                        if (hide){
+                            light.addClass('hide').removeClass('invisible');
+                            main.removeClass('hide');
+                            hide = false;
+                        }
+                        console.log(main.text());
+                        main.removeClass('invisible').text(text);
+                    }
+                    i++;
+                }
+                if (timenode[j]-current == 1){
+                    if (hide) light.addClass('invisible').removeClass('hlight');
+                    main.addClass('invisible');
+                    j++;
+                }
+            })
+        }
+    </script>
+</html>

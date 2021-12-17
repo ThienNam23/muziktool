@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            background-image: url('majesty.jpg');
+            background-size: cover;
+        }
+        .cover{
+            background-size: cover;
+            position: absolute;
+        }
+        .body{
+            background-color: white;
+            height: 96px;
+            width: 48px;
+            display: inline-flex;
+            position: relative;
+        }
+        #left{
+            border-top-left-radius: 96px;
+            border-bottom-left-radius: 96px;
+        }
+        #right{
+            border-top-right-radius: 96px;
+            border-bottom-right-radius: 96px;
+        }
+        #mid{
+            width: 0px;
+            /* animation: widthup 7s ease-in 1.7s; */
+        }
+        #T{
+            background-image: url('T.png');
+            height: 96px;
+            width: 59.5px;
+            z-index: 10;
+        }
+        #am{
+            background-image: url('am.png');
+            height: 96px;
+            /* width: 30px; */
+            width: 0px;
+            /* animation: amup 3s ease-out 2s; */
+        }
+        #hien{
+            /* width: 41.5px; */
+            width: 0px;
+            height: 24px;
+            background-image: url('hien.png');
+            top: 36px;
+            left: 50px;
+            /* animation: whien 3s ease-out 2s; */
+        }
+        #N{
+            height: 96px;
+            width: 24.4px;
+            background-image: url('N.png');
+            /* left: 41px; */
+        }
+        #end{
+            height: 96px;
+            width: 43px;
+            background-image: url('end.png');
+            /* left: 86px; */
+            right: 10px;
+            position: absolute;
+        }
+        #Nam{
+            position: absolute;
+            left: 41px;
+            /* left: 92px; */
+            /* width: 97px; */
+            width: 66px;
+            display: flex;
+            /* animation: leftnam 3s ease-out 2s; */
+        }
+        #Nam>*{
+            display: inline-flex;
+            background-size: cover;
+        }
+        #logo{
+            transform: scale(0.0);
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            display: flex;
+            /* animation: zoom .7s cubic-bezier(0.05, 0.49, 0.58, 1) 1s; */
+        }
+        #hide{
+            position: absolute;
+            background-color:white;
+            height: 20px;
+            width: 5px;
+            top: 40px;
+            left: 42px;
+        }
+        #infors{
+            height: 0px;
+            background-color: white;
+            font-family: cursive;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            /* animation: inf 3s ease-in 2s; */
+            overflow: hidden;
+            top: 33px;
+            left: 180px;
+        }
+        #uzik{
+            background-image: url('uzik.png');
+            width: 52px;
+            height: 0px;
+            top: 36px;
+            left: 76px;
+            /* animation: inf 3s ease-in 5s; */
+        }
+        .reverse{
+            animation: zoom .7s cubic-bezier(0.05, 0.49, 0.58, 1) reverse;
+        }
+        @keyframes zoom {
+            0%{transform: scale(0.0);}
+            90%{transform: scale(1.2);}
+            100%{transform: scale(1.0);}
+        }
+        @keyframes inf {
+            0%{height: 0px;} 7%{height: 30px;} 94%{height: 30px;} 100%{height: 0px;}
+        }
+        @keyframes widthup {
+            0%{width: 0px;} 5%{width: 450px;} 50%{width: 450px;} 55%{width: 60px;} 90%{width: 60px;} 95%{width: 0px;}
+        }
+        @keyframes whien {
+            0%{width: 0px;} 7%{width: 41.5px;} 94%{width: 41.5px;} 100%{width: 0px;}
+        }
+        @keyframes leftnam {
+            0%{width: 66px; left: 41px;} 7%{width: 97px; left: 92px;} 94%{width: 97px; left: 92px;} 100%{width: 66px; left: 41px;}
+        }
+        @keyframes amup {
+            0%{width: 0px;} 7%{width: 30px;} 94%{width: 30px;} 100%{width: 0px;}
+        }
+    </style>
+</head>
+<body>
+    <div id="logo" class="cover">
+        <span class="body" id="left"></span>
+        <span class='body' id="mid"></span>
+        <span class="body" id="right"></span>
+        <div class="cover" id="T"></div>
+        <div class="cover" id="hien"></div>
+        <div id="Nam">
+            <span id="N"></span>
+            <span id="am"></span>
+            <span id="end"></span>
+        </div>
+        <span id='hide'></span>
+        <div class="cover" id="uzik"></div>
+        <div id="infors">Ben Moon - Majesty (ft. Veela)</div>
+    </div>
+    <button id="showlogo">Click here</button>
+</body>
+<script type="text/javascript" src="jquery-3.4.1.js"></script>
+<script>
+    var btnlogo = document.getElementById('showlogo');
+    btnlogo.addEventListener('click',()=>{
+        document.getElementById('uzik').style = "animation: inf 3s ease-in 5.5s";
+        document.getElementById('infors').style = "animation: inf 3s ease-in 2s";
+        document.getElementById('logo').style = 'animation: zoom .7s cubic-bezier(0.05, 0.49, 0.58, 1) 1s forwards';
+        document.getElementById('Nam').style = 'animation: leftnam 3s ease-out 2s';
+        document.getElementById('hien').style = 'animation: whien 3s ease-out 2s';
+        document.getElementById('am').style = 'animation: amup 3s ease-out 2s';
+        document.getElementById('mid').style = 'animation: widthup 7.3s ease-in 1.7s';
+        setTimeout(()=>{
+            btnlogo.style = "color: red";
+            $('#logo').fadeTo(700,0);
+        },9100);
+    })
+</script>
+</html>
