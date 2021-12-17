@@ -334,3 +334,8 @@ const runlyric = ()=>{
         }
     })
 }
+
+function addSongInfor(text) {
+    var infor = $('#infors');
+    infor.text(text.slice(0, 16));
+}
